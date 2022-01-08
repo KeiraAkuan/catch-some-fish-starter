@@ -3,6 +3,10 @@ namespace SpriteKind {
     export const SwimmingFish = SpriteKind.create()
     export const CaughtFish = SpriteKind.create()
 }
+
+
+
+let canReel = false
 function introSequence () {
     Hook = sprites.create(img`
         . . . . . . . . . . . . . . . . 
@@ -31,7 +35,9 @@ function introSequence () {
         controller.moveSprite(Hook, 50, 0)
         Hook.vy = 50
         Hook.startEffect(effects.bubbles)
+    canReel = true
     })
+
 }
 let Hook: Sprite = null
 let lureImg: Image = null
@@ -301,24 +307,22 @@ let fishingCat = sprites.create(img`
 tiles.placeOnTile(fishingCat, tiles.getTileLocation(0, 9))
 let fishImgs = [
 img`
-    ..................
-    ..................
-    ..................
-    ..................
-    ........6666......
-    ......b66666bb....
-    .....b56666555b...
-    bbb..b55555555fbb.
-    b66bb5555655f555b.
-    b556655565555555b.
-    b666655665655555b.
-    b556655666655555b.
-    b66bbb555555555bb.
-    bbb..bbbbbbbbbbb..
-    ..................
-    ..................
-    ..................
-    ..................
+    . . . . . . . . . . . c c c c c 
+    . . . . . . . . . c c 7 7 7 6 c 
+    . . . . . . . . c c 7 7 7 c c . 
+    . . . . . . . . c 6 7 7 c . . . 
+    . . . . . . . . c 6 6 6 c . . . 
+    . . . . . . . . c 6 6 6 c c . . 
+    . . . c c c c c c c 6 6 6 c c . 
+    . . c 6 7 7 7 7 6 c c 6 6 6 c . 
+    . c 7 7 7 7 7 7 7 7 c 6 6 6 c c 
+    c 6 7 7 7 7 7 7 7 7 6 c 6 6 6 c 
+    c 7 c 6 6 6 6 c 7 7 7 c 6 6 6 c 
+    f 7 c c 6 6 c c 7 7 7 f 6 6 6 c 
+    f 7 6 f 6 6 f 6 7 7 7 f 6 6 6 c 
+    . f 7 7 7 7 7 7 7 7 6 f 6 6 c . 
+    . c 1 c f f 1 c 7 6 f 6 6 c c . 
+    . c c c c c c c c c c c c . . . 
     `,
 img`
     . . . . . . . . . . . . . . . . 
@@ -485,3 +489,20 @@ lureImg = img`
     . . . . c . . . 
     `
 introSequence()
+controller.A.onEvent(ControllerButtonEvent.Pressed, function() {
+    if (canReel) {
+    Hook.setVelocity(0, -100)
+
+    }
+})
+
+
+
+function spawnFish(numberOffFish: number) {
+for (let i = 0; i < numberOffFish; i++) {
+  let randomIndex = randint(0, fishImgs.length -1)
+  let newFish = sprites.create(fishImgs[randomIndex], SpriteKind.SwimmingFish)
+}
+
+}
+spawnFish(50)
